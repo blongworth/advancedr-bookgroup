@@ -15,8 +15,9 @@ library(bench)
 n <- 1e4
 x <- 1:n
 f <- function(x) NULL
+g <- function(x) NA
 
-# unallocated list
+# unallocated list NULL
 lf <- function(x) {
   out <- vector(mode = "list")
   for (i in x) {
@@ -25,11 +26,29 @@ lf <- function(x) {
   out
 }
 
-# allocated list
+# allocated list NULL
 laf <- function(x) {
   out <- vector(mode = "list", length = length(x))
   for (i in x) {
     out[i] <- list(f(i))
+  }
+  out
+}
+
+# unallocated list NA
+lfna <- function(x) {
+  out <- vector(mode = "list")
+  for (i in x) {
+    out[i] <- g(i)
+  }
+  out
+}
+
+# allocated list NA
+lafna <- function(x) {
+  out <- vector(mode = "list", length = length(x))
+  for (i in x) {
+    out[i] <- g(i)
   }
   out
 }
@@ -38,9 +57,14 @@ laf <- function(x) {
 Bench::marks. For some reason, naming my expressions isn't working. 
 
 ```{r}
-mark(apply = lapply(x, f), 
-     map = map(x, f),
-     loop = lf(x),
-     loop_alloc = laf(x))
+mark(applyNULL = lapply(x, f), 
+     mapNULL  = map(x, f),
+     loopNULL  = lf(x),
+     loop_allocNULL  = laf(x))
+
+mark(applyNA = lapply(x, g), 
+     mapNA  = map(x, g),
+     loopNA  = lfna(x),
+     loop_allocNA  = lafna(x))
 ```
 
