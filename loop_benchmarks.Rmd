@@ -54,17 +54,29 @@ lafna <- function(x) {
 }
 ```
 
-Bench::marks. For some reason, naming my expressions isn't working. 
+Bench::marks.
 
 ```{r}
-mark(applyNULL = lapply(x, f), 
+marknull <- mark(applyNULL = lapply(x, f), 
      mapNULL  = map(x, f),
      loopNULL  = lf(x),
      loop_allocNULL  = laf(x))
 
-mark(applyNA = lapply(x, g), 
+marknull
+
+
+markna <- mark(applyNA = lapply(x, g), 
      mapNA  = map(x, g),
      loopNA  = lfna(x),
      loop_allocNA  = lafna(x))
+
+markna
+```
+
+Plots
+
+```{r}
+plot(marknull)
+plot(markna)
 ```
 
