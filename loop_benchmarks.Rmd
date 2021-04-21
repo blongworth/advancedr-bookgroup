@@ -12,6 +12,8 @@ https://stackoverflow.com/questions/45101045/why-use-purrrmap-instead-of-lapply
 ```{r}
 library(purrr)
 library(bench)
+library(ggplot2)
+
 n <- 1e4
 x <- 1:n
 f <- function(x) NULL
@@ -76,7 +78,7 @@ markna
 Plots
 
 ```{r}
-plot(marknull)
-plot(markna)
+plot(marknull) + ylim(0.002,.01)
+plot(markna) + ylim(0.002,.01)
 ```
 
