@@ -1,0 +1,46 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+Attempting some benchmarking on looping vs map/apply. The simple function that returns NULL is from this stack overflow comparing map and lapply.
+
+https://stackoverflow.com/questions/45101045/why-use-purrrmap-instead-of-lapply
+
+```{r}
+library(purrr)
+library(bench)
+n <- 1e4
+x <- 1:n
+f <- function(x) NA
+
+# unallocated list
+lf <- function(x) {
+  out <- vector(mode = "list")
+  for (i in x) {
+    out[i] <- f(i)
+  }
+  out
+}
+
+# allocated list
+laf <- function(x) {
+  out <- vector(mode = "list", length = length(x))
+  for (i in x) {
+    out[i] <- f(i)
+  }
+  out
+}
+```
+
+Bench::marks. For some reason, naming my expressions isn't working. 
+
+```{r}
+mark(apply = lapply(x, f), 
+     map = map(x, f),
+     loop = lf(x),
+     loop_alloc = laf(x))
+```
+
