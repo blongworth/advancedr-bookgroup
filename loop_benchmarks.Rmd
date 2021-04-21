@@ -14,13 +14,13 @@ library(purrr)
 library(bench)
 n <- 1e4
 x <- 1:n
-f <- function(x) NA
+f <- function(x) NULL
 
 # unallocated list
 lf <- function(x) {
   out <- vector(mode = "list")
   for (i in x) {
-    out[i] <- f(i)
+    out[i] <- list(f(i))
   }
   out
 }
@@ -29,7 +29,7 @@ lf <- function(x) {
 laf <- function(x) {
   out <- vector(mode = "list", length = length(x))
   for (i in x) {
-    out[i] <- f(i)
+    out[i] <- list(f(i))
   }
   out
 }
